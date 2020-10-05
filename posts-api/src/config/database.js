@@ -2,6 +2,7 @@ const md5 = require('md5');
 const sqlite3 = require('sqlite3').verbose();
 const db = new sqlite3.Database('data.db');
 
+
 const USERS_SCHEMA = `
 CREATE TABLE IF NOT EXISTS users (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -9,6 +10,10 @@ CREATE TABLE IF NOT EXISTS users (
     email TEXT NOT NULL,
     password TEXT NOT NULL
 )
+`;
+
+const DROP_USERS_SCHEMA = `
+	DROP TABLE IF EXISTS users;
 `;
 
 const INSERT_USER = `
@@ -43,8 +48,9 @@ const INSERT_POST = `
 
 db.serialize(async () => {
 	db.run('PRAGMA foreign_keys=ON');
+	db.run(DROP_USERS_SCHEMA);
 	db.run(USERS_SCHEMA);
-	db.run(INSERT_USER, ['Andre', 'profandre.costa@fiap.com.br', md5('1234')]);
+	db.run(INSERT_USER, ['Admin', 'admin@fiap.com.br', md5('123456')]);
 	db.run(DROP_POSTS_SCHEMA);
 	db.run(POSTS_SCHEMA);
 

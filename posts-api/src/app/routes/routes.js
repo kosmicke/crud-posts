@@ -1,4 +1,5 @@
 const db = require('../../config/database');
+const md5 = require('md5');
 
 module.exports = (app) => {
 
@@ -118,6 +119,32 @@ module.exports = (app) => {
 				return;
 			}
 			res.json({ message: 'deleted', changes: this.changes });
+		});
+	});
+
+	app.post('/api/auth', (req, res) => {
+		const sql = 'select * from users where email = ?';
+		const params = [req.body.email];
+		db.all(sql, params, (err, row) => {
+			if (err) {
+				res.status(500).json({ error: err.message });
+				return;
+			}
+			if (!row || !row[0]) {
+				res.status(404).json({ error: "User not found." });
+				return;
+			}
+			if(row[0].password != md5(req.body.password)){
+				res.status(400).json({ error: "Wrong login data." });
+				return;
+			}
+			res.json({
+				message: 'success',
+				data: {
+					email : row[0].email,
+					name : row[0].name,
+				},
+			});
 		});
 	});
 
