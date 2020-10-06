@@ -1,4 +1,5 @@
 import React from 'react';
+import PageTop from '../../components/page-top/page-top.component';
 import postsService from '../../services/posts.service';
 import './post-detail.page.css';
 
@@ -51,17 +52,11 @@ class PostDetailPage extends React.Component {
         return (
             <div className="container">
 
-                <div className="page-top">
-                    <div className="page-top__title">
-                        <h2>Post</h2>
-                        <p>Detalhes do post</p>
-                    </div>
-                    <div className="page-top__aside">
-                        <button className="btn btn-light" onClick={() => this.props.history.goBack()}>
-                            Voltar
-                        </button>
-                    </div>
-                </div>
+                <PageTop title={"Post"} desc={"Detalhes do post"}>
+                    <button className="btn btn-light" onClick={() => this.props.history.goBack()}>
+                        Voltar
+                    </button>
+                </PageTop>
 
                 <div className="row">
                     <div className="col-6">
