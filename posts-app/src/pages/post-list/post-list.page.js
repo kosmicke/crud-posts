@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import PageTop from '../../components/page-top/page-top.component';
 import postsService from '../../services/posts.service';
 import './post-list.page.css';
 
@@ -34,17 +35,12 @@ class PostListPage extends React.Component {
         return (
             <div className="container">
 
-                <div className="page-top">
-                    <div className="page-top__title">
-                        <h2>Posts</h2>
-                        <p>Listagem dos posts</p>
-                    </div>
-                    <div className="page-top__aside">
-                        <button className="btn btn-primary" onClick={() => this.props.history.push('/post-add')}>
-                            Adicionar
-                        </button>
-                    </div>
-                </div>
+                <PageTop title={"Posts"} desc={"Listagem dos posts"}>
+                    <button className="btn btn-primary" onClick={() => this.props.history.push('/post-add')}>
+                        Adicionar
+                    </button>
+                </PageTop>
+
 
                 {/* Percorrendo o array de posts do state e renderizando cada um
                 dentro de um link que leva para a página de detalhes do post específico */}
