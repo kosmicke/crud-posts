@@ -1,4 +1,5 @@
 import React from 'react';
+import PageTop from '../../components/page-top/page-top.component';
 import postsService from '../../services/posts.service';
 import './post-edit.page.css'
 
@@ -87,20 +88,16 @@ class PostEditPage extends React.Component {
 
         return (
             <div className="container">
-                <div className="page-top">
-                    <div className="page-top__title">
-                        <h2>{title}</h2>
-                        <p>{desc}</p>
-                    </div>
-                    <div className="page-top__aside">
-                        <button className="btn btn-light" onClick={() => this.props.history.replace('/post-list')}>
-                            Cancelar
-                        </button>
-                        <button className="btn btn-primary" onClick={() => this.sendPost()}>
-                            Salvar
-                        </button>
-                    </div>
-                </div>
+
+                <PageTop title={title} desc={desc}>
+                    <button className="btn btn-light" onClick={() => this.props.history.replace('/post-list')}>
+                        Cancelar
+                    </button>
+                    <button className="btn btn-primary" onClick={() => this.sendPost()}>
+                        Salvar
+                    </button>
+                </PageTop>
+
                 <form onSubmit={e => e.preventDefault()}>
                     <div className="form-group">
                         <label htmlFor="title">Título</label>
