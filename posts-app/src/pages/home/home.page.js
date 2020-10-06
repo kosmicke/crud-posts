@@ -1,12 +1,15 @@
 import React from 'react';
 
-class HomePage extends React.Component{
+class HomePage extends React.Component {
 
-    render(){
-        return(
-            <h1>HomePage</h1>
+    render() {
+        return (
+            <div className="container">
+                <h1>HomePage</h1>
+            </div>
         )
     }
+
 }
 
 export default HomePage;
