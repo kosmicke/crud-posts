@@ -1,5 +1,7 @@
 import React from 'react';
+import { Redirect } from 'react-router-dom';
 import PageTop from '../../components/page-top/page-top.component';
+import authService from '../../services/auth.service';
 import postsService from '../../services/posts.service';
 import './post-detail.page.css';
 
@@ -9,16 +11,22 @@ class PostDetailPage extends React.Component {
         super(props)
         this.state = {
             // Atributo para armazenar os dados do post
-            post: null
+            post: null,
+            redirectTo: null
         }
     }
 
     // Função que é executada assim que o componente carrega
     componentDidMount() {
-        // Recuperando os id do post na url
-        let postId = this.props.match.params.id
-        // Chamando a função que carrega os dados do post
-        this.loadPost(postId)
+        let userData = authService.getLoggedUser();
+        if(!userData){
+            this.setState({redirectTo : "/login"})
+        }else{
+            // Recuperando os id do post na url
+            let postId = this.props.match.params.id
+            // Chamando a função que carrega os dados do post
+            this.loadPost(postId)
+        }
     }
 
     // Função que carrega os dados do post e salva no state
@@ -49,6 +57,13 @@ class PostDetailPage extends React.Component {
     }
 
     render() {
+
+        if(this.state.redirectTo){
+            return(
+                <Redirect to={this.state.redirectTo}/>
+            )
+        }
+
         return (
             <div className="container">
 

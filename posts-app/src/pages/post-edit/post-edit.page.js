@@ -1,5 +1,7 @@
 import React from 'react';
+import { Redirect } from 'react-router-dom';
 import PageTop from '../../components/page-top/page-top.component';
+import authService from '../../services/auth.service';
 import postsService from '../../services/posts.service';
 import './post-edit.page.css'
 
@@ -13,17 +15,23 @@ class PostEditPage extends React.Component {
             id: null,
             title : '',
             content : '',
-            imageUrl : ''
+            imageUrl : '',
+            redirectTo: null
         }
 
     }
 
     // Função executada assim que o componente carrega
     componentDidMount(){
-        // Verificando se id foi passado nos parâmetros da url
-        if(this.props?.match?.params?.id){
-            let postId = this.props.match.params.id
-            this.loadPost(postId)
+        let userData = authService.getLoggedUser();
+        if(!userData){
+            this.setState({redirectTo : "/login"})
+        }else{
+            // Verificando se id foi passado nos parâmetros da url
+            if(this.props?.match?.params?.id){
+                let postId = this.props.match.params.id
+                this.loadPost(postId)
+            }
         }
     }
 
@@ -82,6 +90,12 @@ class PostEditPage extends React.Component {
     }
 
     render() {
+
+        if(this.state.redirectTo){
+            return(
+                <Redirect to={this.state.redirectTo}/>
+            )
+        }
 
         let title = this.state.id ? 'Editar Post' : 'Novo Post';
         let desc = this.state.id ? 'Editar informações de um post' : 'Formulário de criação de posts';
