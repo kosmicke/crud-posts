@@ -1,6 +1,7 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import PageTop from '../../components/page-top/page-top.component';
+import authService from '../../services/auth.service';
 import postsService from '../../services/posts.service';
 import './post-list.page.css';
 
@@ -11,12 +12,18 @@ class PostListPage extends React.Component {
         this.state = {
             // Atributo para armazenar o array de posts vindos da API.
             posts: [],
+            redirectTo: null
         }
     }
 
     // Função que é executada assim que o componente carrega.
     componentDidMount() {
-        this.loadPosts()
+        let userData = authService.getLoggedUser();
+        if(!userData){
+            this.setState({redirectTo : "/login"})
+        }else{
+            this.loadPosts()
+        }
     }
 
     // Função responsável por chamar o serviço e carregar os posts.
@@ -31,6 +38,12 @@ class PostListPage extends React.Component {
     }
 
     render() {
+
+        if(this.state.redirectTo){
+            return(
+                <Redirect to={this.state.redirectTo}/>
+            )
+        }
 
         return (
             <div className="container">
