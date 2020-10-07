@@ -7,7 +7,7 @@ class Login extends React.Component {
 
     // Iniciando o state com os valores dos campos vazios
     this.state = {
-      userName: "",
+      email: "",
       password: "",
     };
   }
@@ -17,12 +17,12 @@ class Login extends React.Component {
     event.preventDefault();
 
     const data = {
-      nickName: this.state.userName,
+      email: this.state.email,
       password: this.state.password,
     };
 
-    if (!data.nickName || data.nickName == "") {
-      window.alert("Nome de usuário é obrigatório");
+    if (!data.email || data.email == "") {
+      window.alert("E-mail é obrigatório");
       return;
     }
 
@@ -37,6 +37,7 @@ class Login extends React.Component {
       this.props.onLogin();
       this.props.history.replace("/");
     } catch (error) {
+      console.log("error", error)
       window.alert("Não foi possível efetuar o login.");
     }
   }
@@ -48,14 +49,14 @@ class Login extends React.Component {
           <div className="card-body">
             <form onSubmit={(e) => this.sendLogin(e)}>
               <div className="form-group">
-                <label htmlFor="userName">Nome de usuário</label>
+                <label htmlFor="email">E-mail</label>
                 <input
-                  type="text"
+                  type="email"
                   className="form-control"
-                  id="userName"
-                  placeholder="Insira seu nome de usuário"
-                  value={this.state.userName}
-                  onChange={(e) => this.setState({ userName: e.target.value })}
+                  id="email"
+                  placeholder="Insira seu email"
+                  value={this.state.email}
+                  onChange={(e) => this.setState({ email: e.target.value })}
                 />
               </div>
               <div className="form-group">
