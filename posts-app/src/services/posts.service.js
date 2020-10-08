@@ -6,11 +6,11 @@ const apiUrl = "http://localhost:8000/api"
 const postsService = {
 
     // Função para listar os posts 
-    async list(){
+    async list(query){
         const enpoint = apiUrl + "/posts"
-        return axios.get(enpoint)
+        return axios.get(enpoint, { params : query })
     },
-
+    
     // Função para recuperar dados de um post específico
     async getOne(postId){
         const enpoint = apiUrl + "/posts/" + postId
