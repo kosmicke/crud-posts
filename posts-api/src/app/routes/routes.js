@@ -8,8 +8,16 @@ module.exports = (app) => {
 	});
 
 	app.get('/api/posts/', (req, res) => {
-		const sql = 'select * from posts';
-		db.all(sql, (err, rows) => {
+		
+		let sql = 'select * from posts';
+		let params = {}
+
+		if(req.query.search){
+			sql = 'select * from posts where title like $search';
+			params = { $search : '%' + req.query.search + '%' }
+		}
+		
+		db.all(sql, params, (err, rows) => {
 			if (err) {
 				res.status(400).json({ error: err.message });
 				return;
