@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import PageTop from '../../components/page-top/page-top.component';
 import authService from '../../services/auth.service';
@@ -10,23 +10,19 @@ const PostListPage = (props) => {
     const [posts, setPosts] = useState([])
     const [redirectTo, setRedirectTo] = useState(null)
     const [search, setSearch] = useState("")
-
-    // useEffect(() => {
-    //     let userData = authService.getLoggedUser();
-    //     if(!userData){
-    //         setRedirectTo("/login")
-    //     }else{
-    //         loadPosts()
-    //     }
-    // }, [])
+    const inputRef = useRef()
 
     useEffect(() => {
-
         let userData = authService.getLoggedUser();
         if(!userData){
-            setRedirectTo("/login");
-            return;
+            setRedirectTo("/login")
+        }else{
+            loadPosts()
+            inputRef.current.focus()
         }
+    }, [])
+
+    useEffect(() => {
 
         let timeId = setTimeout(() => {
             if (search != "") {
@@ -40,7 +36,6 @@ const PostListPage = (props) => {
 
     }, [search])
 
-
     // Função responsável por chamar o serviço e carregar os posts.
     const loadPosts = async (query) => {
         try {
@@ -51,7 +46,6 @@ const PostListPage = (props) => {
             alert("Não foi possível listar os posts.")
         }
     }
-
 
     if (redirectTo) {
         return (
@@ -71,6 +65,7 @@ const PostListPage = (props) => {
             <div className="form-group">
                 <label htmlFor="search">Pesquisa</label>
                 <input
+                    ref={inputRef}
                     type="text"
                     className="form-control"
                     id="search"
